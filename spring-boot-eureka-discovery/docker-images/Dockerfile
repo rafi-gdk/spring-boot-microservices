@@ -1,4 +1,4 @@
 FROM maven
-EXPOSE 1001
-COPY target/*-SNAPSHOT.jar /build/app-build.jar
-ENTRYPOINT ["java","-jar","/build/app-build.jar"]
+RUN mkdir /opt/eureka-server
+COPY target/*-SNAPSHOT.jar /opt/eureka-server/app-build.jar
+ENTRYPOINT ["java","-jar","/opt/eureka-server/app-build.jar"]

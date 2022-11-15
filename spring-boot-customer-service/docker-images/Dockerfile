@@ -1,4 +1,4 @@
 FROM maven
-EXPOSE 1000
-COPY target/*-SNAPSHOT.jar /build/app-build.jar
-ENTRYPOINT ["java","-jar","/build/app-build.jar"]
+RUN mkdir /opt/customer-service
+COPY target/*-SNAPSHOT.jar /opt/customer-service/app-build.jar
+ENTRYPOINT ["java","-jar","/opt/customer-service/app-build.jar"]

@@ -1,4 +1,4 @@
 FROM maven
-EXPOSE 1000
-COPY target/*-SNAPSHOT.jar /build/app-build.jar
-ENTRYPOINT ["java","-jar","/build/app-build.jar"]
+RUN mkdir /opt/cloud-gateway
+COPY target/*-SNAPSHOT.jar /opt/cloud-gateway/app-build.jar
+ENTRYPOINT ["java","-jar","/opt/cloud-gateway/app-build.jar"]
