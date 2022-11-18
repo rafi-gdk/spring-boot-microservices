@@ -25,12 +25,49 @@ eureka:
       enabled: true
     #service-url:
       #defaultZone: http://192.168.0.176:1001/eureka
+    healthcheck:
+      enabled:
   instance:
     hostname: localhost
     prefer-ip-address: true
     lease-renewal-interval-in-seconds: 10
     lease-expiration-duration-in-seconds: 20
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+  endpoint:
+    health:
+      show-details: always
+
 
 resilience4j:
   circuitbreaker:
-
+    instances:
+      test-resilience4j:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 10
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+  retry:
+    instances:
+      test-resilience4j:
+        maxRetryAttempts: 5
+        waitDuration: 10s
+  ratelimiter:
+    instances:
+      test-resilience4j:
+        registerHealthIndicator: false
+        limitForPeriod: 10
+        limitRefreshPeriod: 10s
+        timeoutDuration: 3s

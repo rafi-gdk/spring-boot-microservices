@@ -3,6 +3,7 @@ package com.sonu.customer.controller;
 import com.sonu.customer.model.CustomerRequest;
 import com.sonu.customer.model.CustomerResponse;
 import com.sonu.customer.service.CustomerService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    @GetMapping(value = "/get-customer/{id}")
+    @GetMapping("/get-customer/{id}")
     public CustomerResponse getCustomer(@PathVariable("id") Integer id) {
         logger.info("id-->" + id);
         return customerService.getCustomer(id);
@@ -36,4 +37,17 @@ public class CustomerController {
         logger.info("customer-->" + customer);
         return customerService.addFeignCustomer(customer);
     }
+
+    @GetMapping(value = "/test-resilience4j")
+    //@Retry(name = "/test-resilience4j", fallbackMethod = "fallbackMethod")
+    //@RateLimiter(name = "/test-resilience4j", fallbackMethod = "handleFailureMethod")
+    @CircuitBreaker(name = "test-resilience4j", fallbackMethod = "handleFailureMethod")
+    public CustomerResponse testResilience4j() {
+        return customerService.getCustomer(null);
+    }
+
+    public CustomerResponse handleFailureMethod(Exception e) {
+        return new CustomerResponse();
+    }
+
 }
