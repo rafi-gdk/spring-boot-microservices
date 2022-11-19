@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: eureka-deployment
+  labels:
+    app: eurekalabel
+spec:
+  replicas: 1 # Number of replicas that will be created for this deployment
+  selector:
+    matchLabels:
+      app: eurekalabel
+  template:
+    metadata:
+      labels:
+        app: eurekalabel
+    spec:
+      containers:
+        - name: eureka
+          image: eureka:latest # Image that will be used to containers in the cluster
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8761 # The port that the container is running on in the cluster

@@ -6,8 +6,8 @@ services:
     build:
       context: ./spring-boot-eureka-discovery
       dockerfile: ./docker-images/Dockerfile
-    #environment:
-      #- eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
+    environment:
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
     ports:
       - "8761:8761"
   cloud-gateway:
